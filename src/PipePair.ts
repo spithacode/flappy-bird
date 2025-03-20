@@ -9,6 +9,7 @@ export class PipePair implements IGameEntity {
     public secondPipeHeight = randomBetween(DRAW_HEIGHT * 0.4, DRAW_HEIGHT / 2 - this.margin * 2);
     public width = 70;
     private vx: number = -100;
+    public scored: boolean = false;
 
     constructor(
         public x: number,

@@ -24,7 +24,8 @@ export class ResourceManager{
                 this.loadAsset("/pipe-green.png"),
                 this.loadAsset("/base.png"),
                 this.loadAsset("/audio/die.wav"),
-                this.loadAsset("/audio/hit.wav")])
+                this.loadAsset("/audio/hit.wav"),
+                this.loadAsset("/audio/point.wav")])
     }catch(err){
         console.error(err)
 
