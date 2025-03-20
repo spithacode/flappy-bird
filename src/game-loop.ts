@@ -22,6 +22,7 @@ export class GameLoop {
     }
     return this.instance;
   }
+
   public get time(): number {
     return this.lastTimestamp - this.gameStartTime;
   }
@@ -110,6 +111,11 @@ export class GameLoop {
 
   setTargetFPS(fps: number) {
     this.targetFps = Math.min(Math.max(fps, this.MIN_FPS), this.MAX_FPS);
+  }
+
+  // Getter for isRunning state
+  public get running(): boolean {
+    return this.isRunning;
   }
 }
 

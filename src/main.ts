@@ -7,10 +7,10 @@ import { GameLoop } from "./game-loop";
 import { IGameEntity } from "./interfaces/IGameEntity";
 import { PipePair } from "./PipePair";
 import { ResourceManager } from "./resource-manager";
-import { ScoreManager } from "./score-manager";
 import "./style.css";
 import { randomBetween } from "./utils";
 import { initializeInputManager } from "./input";
+import { ScoreLabel } from "./ScoreLabel";
 
 const canvas = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -19,7 +19,6 @@ const ctx = canvas.getContext("2d"); // The pen which we will use to things
 
 // Initialize all managers
 const resourceManager = ResourceManager.getInstance();
-const scoreManager = ScoreManager.getInstance();
 initializeInputManager(canvas);
 const gameLoop = GameLoop.getInstance();
 
@@ -30,9 +29,14 @@ export const DRAW_OFFSET = 80;
 export const DRAW_HEIGHT = HEIGHT - DRAW_OFFSET;
 let DISTANCE_BETWEEN_PIPES = 200;
 
+// Create game entities
 const bird = new Bird({ x: 100, y: 100 });
+const scoreLabel = new ScoreLabel({ x: WIDTH / 2, y: 100 });
 
-let gameEntities: IGameEntity[] = [new PipePair(400), bird];
+let gameEntities: IGameEntity[] = [new PipePair(400), bird, scoreLabel];
+
+// Track pipes that have been scored
+const scoredPipes = new Set<PipePair>();
 
 if (ctx === null) throw new Error("Ctx is not defined");
 
@@ -51,18 +55,22 @@ const update = (dt: number) => {
     if (entity instanceof PipePair) {
       const pipePair = entity as PipePair;
 
-      // Check if bird has passed this pipe for scoring
-      if (!pipePair.scored && bird.position.x > pipePair.x + pipePair.width) {
-        scoreManager.incrementScore();
-        pipePair.scored = true;
+      // Check if the bird has passed the pipe to award points
+      if (!scoredPipes.has(pipePair) && pipePair.x + pipePair.width < bird.position.x) {
+        scoreLabel.incrementScore();
+        scoredPipes.add(pipePair);
+        
         // Play score sound
-        const pointAudio = resourceManager.get<HTMLAudioElement>("/audio/point.wav");
-        if (pointAudio) {
-          pointAudio.play();
+        const scoreSound = resourceManager.get<HTMLAudioElement>("/audio/point.wav");
+        if (scoreSound) {
+          scoreSound.currentTime = 0;
+          scoreSound.play().catch(err => console.error("Error playing score sound:", err));
         }
       }
 
       if (pipePair.x + pipePair.width <= 0) {
+        // Remove from scored pipes set when removing from game
+        scoredPipes.delete(pipePair);
         entities.splice(index, 1);
       }
     }
@@ -132,31 +140,29 @@ const render = () => {
   gameEntities.forEach((entity) => {
     entity.render(ctx);
   });
-
-  // Render the score
-  renderScore(ctx);
 };
 
-// Function to render the score in the Flappy Bird style
-const renderScore = (ctx: CanvasRenderingContext2D) => {
-  const score = scoreManager.getScore();
-  ctx.save();
+// Reset game function for potential restart
+export function resetGame() {
+  // Clear existing entities
+  gameEntities = [];
+  scoredPipes.clear();
   
-  // Set up text style
-  ctx.fillStyle = "white";
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 5;
-  ctx.font = "bold 48px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-
-  // Draw the score
-  const scoreText = score.toString();
-  ctx.strokeText(scoreText, WIDTH / 2, 50);
-  ctx.fillText(scoreText, WIDTH / 2, 50);
-
-  ctx.restore();
-};
+  // Reset bird
+  bird.reset();
+  bird.position = { x: 100, y: 100 };
+  
+  // Reset score
+  scoreLabel.resetScore();
+  
+  // Add entities back
+  gameEntities = [new PipePair(400), bird, scoreLabel];
+  
+  // Restart game loop if needed
+  if (!gameLoop.running) {
+    gameLoop.start(update, render);
+  }
+}
 
 console.log("Starting the game");
 gameLoop.start(update, render);

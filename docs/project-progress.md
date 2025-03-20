@@ -7,7 +7,7 @@ The project implements a Flappy Bird clone using TypeScript and HTML Canvas. The
 
 ### Strengths
 - **Game Loop Implementation**: Uses a professional fixed timestep pattern that decouples physics updates from rendering, ensuring consistent gameplay across different devices.
-- **Singleton Pattern**: Properly uses singletons for global managers (GameLoop, ResourceManager, ScoreManager).
+- **Singleton Pattern**: Properly uses singletons for global managers (GameLoop, ResourceManager).
 - **Entity System**: Implements a clean entity-based architecture with the IGameEntity interface.
 - **Resource Management**: Handles asset loading efficiently with proper error handling.
 - **Type Safety**: Uses TypeScript with strict typings and no 'any' types.
@@ -15,7 +15,8 @@ The project implements a Flappy Bird clone using TypeScript and HTML Canvas. The
 - **Collision Detection**: Has dedicated collision handlers for game mechanics.
 - **External Dependencies**: Uses external packages like @spithacode/input-manager to leverage existing solutions.
 - **Clean Module Organization**: Input management is centralized and initialized in the main entry point.
-- **Score System**: Implements a score system that tracks player progress and displays it on screen.
+- **Score System**: Implements a proper scoring system with high score persistence using localStorage.
+- **Realistic Bird Movement**: Bird rotates based on velocity to simulate realistic flight dynamics.
 
 ### Areas for Improvement
 - **State Management**: Could benefit from a formal game state system to handle different screens (menu, game, game over).
@@ -42,10 +43,14 @@ The project implements a Flappy Bird clone using TypeScript and HTML Canvas. The
 - Input handling: ✅ (Using @spithacode/input-manager, centralized in main.ts)
 - Game over conditions: ✅
 - Score tracking: ✅
+- Score display: ✅
+- High score persistence: ✅
+- Bird rotation animation: ✅
 - Game states (menu, gameplay, game over): ❌
 - Audio manager: ❌
 - UI system: ❌
 
 ## Recent Changes
-- **2024-??-??**: Added a score system that tracks when the bird passes through pipes and displays the current score on screen.
+- **2024-??-??**: Added bird rotation animation that matches the original Flappy Bird. The bird now rotates downward when falling and tilts upward when jumping.
+- **2024-??-??**: Added score system with ScoreLabel entity that displays and tracks the player's score. Implemented high score tracking with localStorage persistence.
 - **2024-??-??**: Improved input handling architecture. Moved InputManager initialization to main.ts and created a dedicated input.ts module to avoid circular dependencies. 
