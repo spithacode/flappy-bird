@@ -27,7 +27,7 @@ export const WIDTH = canvas.width;
 export const HEIGHT = canvas.height;
 export const DRAW_OFFSET = 80;
 export const DRAW_HEIGHT = HEIGHT - DRAW_OFFSET;
-let DISTANCE_BETWEEN_PIPES = 200;
+let DISTANCE_BETWEEN_PIPES = 250;
 
 // Create game entities
 const bird = new Bird({ x: 100, y: 100 });
@@ -44,7 +44,7 @@ let prevRandomizationTime = 0;
 
 const update = (dt: number) => {
   if (gameLoop.time - prevRandomizationTime >= 1000) {
-    DISTANCE_BETWEEN_PIPES = randomBetween(100, 300);
+    DISTANCE_BETWEEN_PIPES = randomBetween(200, 300);
     prevRandomizationTime = gameLoop.time;
     console.log("randomized", DISTANCE_BETWEEN_PIPES);
   }
