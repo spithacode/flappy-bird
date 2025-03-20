@@ -13,6 +13,7 @@
     "vite": "^6.0.5"
   },
   "dependencies": {
+    "@spithacode/game-loop": "^1.0.1",
     "@spithacode/input-manager": "^1.0.3",
     "input-manager@1.0.4": "link:spithacode/input-manager@1.0.4"
   }

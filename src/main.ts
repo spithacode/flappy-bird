@@ -3,7 +3,7 @@ import {
   isBirdCollidingWithGround,
   isBirdCollidingWithPipes,
 } from "./collision-handlers";
-import { GameLoop } from "./game-loop";
+import { getGameLoop } from "@spithacode/game-loop";
 import { IGameEntity } from "./interfaces/IGameEntity";
 import { PipePair } from "./PipePair";
 import { ResourceManager } from "./resource-manager";
@@ -20,7 +20,7 @@ const ctx = canvas.getContext("2d"); // The pen which we will use to things
 // Initialize all managers
 const resourceManager = ResourceManager.getInstance();
 initializeInputManager(canvas);
-const gameLoop = GameLoop.getInstance();
+const gameLoop = getGameLoop();
 
 // Game constants
 export const WIDTH = canvas.width;
@@ -159,7 +159,7 @@ export function resetGame() {
   gameEntities = [new PipePair(400), bird, scoreLabel];
   
   // Restart game loop if needed
-  if (!gameLoop.running) {
+  if (!gameLoop.isRunning) {
     gameLoop.start(update, render);
   }
 }

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@spithacode/game-loop':
+        specifier: ^1.0.1
+        version: 1.0.2
       '@spithacode/input-manager':
         specifier: ^1.0.3
         version: 1.0.4
@@ -269,6 +272,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@spithacode/game-loop@1.0.2':
+    resolution: {integrity: sha512-/e4e4/0wmIql5SLba3n7Yc7a+oOgWv93oBafbBL2/W7Vjx8ZncM6WrYPxsXFlksmPB8KQvmgU5Ni080Gdh2uIA==}
+
   '@spithacode/input-manager@1.0.4':
     resolution: {integrity: sha512-pkySjBKZFIWZ1yZoooQhc2CwIfH1Ugtsvjy/NiahTighIRQBHBYYLDhX9GKMJ+T/IgQyEz/5fPYRXoTdOPXW+A==}
 
@@ -484,6 +490,10 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.36.0':
     optional: true
+
+  '@spithacode/game-loop@1.0.2':
+    dependencies:
+      '@spithacode/game-loop': 'link:'
 
   '@spithacode/input-manager@1.0.4': {}
 
